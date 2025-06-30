@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FixMyCity - Service Requests</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .filter-box {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #requestList {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 600px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .request-item {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+    .request-item:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>FIXMYCITY 🚀</h1>
+  <h2>Service Requests</h2>
+
+  <div class="filter-box">
+    <input type="text" id="searchPincode" placeholder="Enter Pincode">
+    <select id="searchService">
+      <option value="">--Select Service--</option>
+      <option value="Electrician">Electrician</option>
+      <option value="Plumber">Plumber</option>
+      <option value="Car Repair">Car Repair</option>
+      <option value="Bike Repair">Bike Repair</option>
+    </select>
+    <button onclick="filterRequests()">Search</button>
+  </div>
+
+  <div id="requestList">
+    <p>Loading requests...</p>
+  </div>
+
+  <script>
+    async function loadRequests() {
+      try {
+        const res = await fetch('/get-requests');
+        const data = await res.json();
+        window.allRequests = data;
+        showRequests(data);
+      } catch (err) {
+        document.getElementById('requestList').innerHTML = "<p>Error loading requests.</p>";
+        console.error(err);
+      }
+    }
+
+    function showRequests(data) {
+      const list = document.getElementById('requestList');
+      list.innerHTML = '';
+
+      if (data.length === 0) {
+        list.innerHTML = '<p>No matching requests found.</p>';
+        return;
+      }
+
+      data.forEach((req, i) => {
+        const item = document.createElement('div');
+        item.className = 'request-item';
+        item.innerHTML = `
+          <strong>${i + 1}. ${req.name}</strong><br>
+          Service: ${req.service}<br>
+          Pincode: ${req.pincode}<br>
+          Contact: ${req.contact}
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function filterRequests() {
+      const pin = document.getElementById('searchPincode').value.trim();
+      const service = document.getElementById('searchService').value;
+
+      const filtered = window.allRequests.filter(req => {
+        return (pin === '' || req.pincode === pin) &&
+               (service === '' || req.service === service);
+      });
+
+      showRequests(filtered);
+    }
+
+    loadRequests(); // Load on page start
+  </script>
+</body>
+</html>

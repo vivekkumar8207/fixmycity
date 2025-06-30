@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FixMyCity - Find Local Services</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>FixMyCity 🚀</header>
+
+  <div class="container">
+    <form id="requestForm">
+      <label for="name">Your Name</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="pincode">Your Area Pincode</label>
+      <input type="text" id="pincode" name="pincode" required />
+
+      <label for="service">Select Service</label>
+      <select id="service" name="service" required>
+        <option value="">-- Select Service --</option>
+        <option value="Electrician">Electrician</option>
+        <option value="Plumber">Plumber</option>
+        <option value="Car Repair">Car Repair</option>
+        <option value="Bike Repair">Bike Repair</option>
+      </select>
+
+      <label for="contact">Your Phone Number</label>
+      <input type="text" id="contact" name="contact" required />
+
+      <button type="submit">Request Now</button>
+    </form>
+  </div>
+
+ <script>
+  document.getElementById('requestForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const pincode = document.getElementById('pincode').value;
+    const service = document.getElementById('service').value;
+    const contact = document.getElementById('contact').value;
+
+    const payload = { name, pincode, service, contact };
+
+    try {
+      const res = await fetch('/request-service', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await res.json();
+      alert(result.message || "Request sent!");
+    } catch (err) {
+      console.error("❌ Error:", err);
+      alert("Something went wrong.");
+    }
+  });
+</script>

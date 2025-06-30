@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FixMyCity - Requests</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    h1 {
+      text-align: center;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>📋 FixMyCity Service Requests</h1>
+  <div id="requestList">Loading requests...</div>
+
+  <script>
+    async function loadRequests() {
+      try {
+        const res = await fetch('/get-requests');
+        const data = await res.json();
+        const listDiv = document.getElementById('requestList');
+
+        if (!Array.isArray(data) || data.length === 0) {
+          listDiv.innerHTML = '<p>No requests found.</p>';
+        } else {
+          listDiv.innerHTML = '<ul>' + data.map(r => `
+            <li><strong>${r.name}</strong> requested <em>${r.service}</em> in <code>${r.pincode}</code> (📞 ${r.contact})</li>
+          `).join('') + '</ul>';
+        }
+      } catch (err) {
+        console.error(err);
+        document.getElementById('requestList').innerHTML = '<p>Error loading requests.</p>';
+      }
+    }
+
+    window.onload = loadRequests;
+  </script>
+</body>
+</html>
