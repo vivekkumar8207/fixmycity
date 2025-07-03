@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>FixMyCity - Service Request</title>
-  <link rel="stylesheet" href="/style.css">
+  <title>FixMyCity - Request Service</title>
 </head>
 <body>
+
   <h1>FixMyCity - Request a Service</h1>
 
   <form id="serviceForm">
-    <input type="text" id="name" placeholder="Your Name" required /><br />
-    <input type="tel" id="phone" placeholder="Phone Number" required /><br />
-    <input type="text" id="pincode" placeholder="Pincode" required /><br />
-
+    <input type="text" id="name" placeholder="Your Name" required /><br /><br />
+    <input type="tel" id="phone" placeholder="Phone Number" required /><br /><br />
+    <input type="text" id="pincode" placeholder="Pincode" required /><br /><br />
+    
     <select id="serviceType" required>
       <option value="">-- Select Service --</option>
       <option value="Bike Repair">Bike Repair</option>
@@ -28,7 +28,6 @@
 
   <div id="status" style="margin-top: 15px; font-weight: bold;"></div>
 
-  <!-- ✅ Make sure this script is loaded last -->
   <script src="/script.js"></script>
 </body>
 </html>
